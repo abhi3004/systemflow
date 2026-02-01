@@ -38,8 +38,8 @@ export const Node = ({
     id,
     data,
     title,
+    icon: Icon,
     width = 200,
-
     height = 100,
     handles = [],
     fields = [],
@@ -63,7 +63,12 @@ export const Node = ({
                     id={`${id}-${handle.id}`}
                 />
             ))}
-            {title && <div className="font-semibold mb-2 text-[var(--text-color)]">{title}</div>}
+            {title && (
+                <div className="flex items-center gap-2 font-semibold mb-2 text-[var(--text-color)]">
+                    {Icon && <Icon className="w-4 h-4" />}
+                    {title}
+                </div>
+            )}
             {fields.length > 0 && (
                 <div className="space-y-2">
                     {fields.map((f) => {

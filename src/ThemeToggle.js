@@ -2,13 +2,32 @@ import { useState, useEffect, useRef } from 'react';
 import { MoonIcon, SunIcon } from '@heroicons/react/24/solid'
 
 export const ThemeToggle = () => {
-    const [isDark, setIsDark] = useState(false);
+    const [isDark, setIsDark] = useState(() => {
+        // Check for saved preference first, then system preference
+        const saved = localStorage.getItem('theme');
+        if (saved) return saved === 'dark';
+        return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    });
     const [isAnimating, setIsAnimating] = useState(false);
     const buttonRef = useRef(null);
 
     useEffect(() => {
         document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
     }, [isDark]);
+
+    // Listen for system preference changes
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        const handleChange = (e) => {
+            // Only auto-switch if user hasn't manually set a preference
+            if (!localStorage.getItem('theme')) {
+                setIsDark(e.matches);
+            }
+        };
+        mediaQuery.addEventListener('change', handleChange);
+        return () => mediaQuery.removeEventListener('change', handleChange);
+    }, []);
 
     const toggleTheme = () => {
         if (isAnimating) return;
