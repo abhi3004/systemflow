@@ -2,6 +2,7 @@ import React, { useState, useCallback } from "react";
 import { Node, Position } from "./Node";
 import { useReactFlow } from "reactflow";
 import { SettingsDrawer, SettingsButton } from "../components/SettingsDrawer";
+import { CpuChipIcon } from '@heroicons/react/24/solid';
 
 const LLM_FIELDS = [
   {
@@ -77,13 +78,14 @@ export const LLMNode = ({ id, data, selected }) => {
         data={data}
         selected={selected}
         title={'LLM'}
+        icon={CpuChipIcon}
         handles={[
           { id: "system", type: "target", position: Position.Left, style: { top: "33%" } },
           { id: "prompt", type: "target", position: Position.Left, style: { top: "66%" } },
           { id: "response", type: "source", position: Position.Right },
         ]}
         fields={[
-          { kind: "select", key: "model", label: "Model", options: [{ value: "gpt-3.5-turbo", label: "GPT-3.5 Turbo" }, { value: "gpt-4", label: "GPT-4" }] },
+          { kind: "select", key: "model", label: "Model", options: LLM_FIELDS.find(f => f.key === "model").options },
         ]}
       >
         <SettingsButton onClick={openDrawer} />

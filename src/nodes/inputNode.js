@@ -1,5 +1,6 @@
 import React from "react";
 import { Node, Position } from "./Node";
+import { ArrowRightOnRectangleIcon } from '@heroicons/react/24/solid';
 
 export const InputNode = ({ id, data, selected }) => {
   return (
@@ -8,6 +9,7 @@ export const InputNode = ({ id, data, selected }) => {
       data={data}
       selected={selected}
       title="Input"
+      icon={ArrowRightOnRectangleIcon}
       handles={[{ id: "value", type: "source", position: Position.Right }]}
       fields={[
         { kind: "text", key: "inputName", label: "Name", defaultValue: id.replace("customInput-", "input_") },
